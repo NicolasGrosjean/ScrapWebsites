@@ -13,6 +13,7 @@ BOT_NAME = 'Scrapping'
 
 SPIDER_MODULES = ['Scrapping.spiders']
 NEWSPIDER_MODULE = 'Scrapping.spiders'
+FEED_EXPORT_ENCODING = 'utf-8' # The export will be in utf-8
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'Scrapping (+http://www.yourdomain.com)'
