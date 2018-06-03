@@ -1,4 +1,5 @@
 import scrapy
+import datetime
 
 class QuotesSpider(scrapy.Spider):
     name = "recits_parties"
@@ -9,6 +10,7 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
         if len(response.xpath('.//ol')) < 2:
             return
+        today = datetime.date.today()
         for aar in response.xpath('.//ol')[1].xpath('.//li'):
             if len(aar.xpath('.//ul')) < 2:
                 continue
@@ -18,7 +20,8 @@ class QuotesSpider(scrapy.Spider):
             yield {
                'title' : aar.xpath('.//a//@title').extract_first(),
     				'replies' : stats[0].xpath('.//span//text()').extract_first(),
-    				'views' : stats[1].xpath('.//span//text()').extract_first()
+    				'views' : stats[1].xpath('.//span//text()').extract_first(),
+               'date' : today
                 }
 
         next_page_list = response.xpath('//li[@class="ipsPagination_next"]')
