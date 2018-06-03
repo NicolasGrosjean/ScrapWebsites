@@ -12,7 +12,7 @@ class QuotesSpider(scrapy.Spider):
         for aar in response.xpath('.//ol')[1].xpath('.//li'):
             if len(aar.xpath('.//ul')) < 2:
                 continue
-            stats = aar.xpath('.//ul')[1].xpath('.//li')
+            stats = aar.xpath('.//ul[@class="ipsDataItem_stats"]').xpath('.//li')
             if len(stats) < 2:
                 continue
             yield {
