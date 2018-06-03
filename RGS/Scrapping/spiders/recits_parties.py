@@ -20,3 +20,9 @@ class QuotesSpider(scrapy.Spider):
     				'replies' : stats[0].xpath('.//span//text()').extract_first(),
     				'views' : stats[1].xpath('.//span//text()').extract_first()
                 }
+
+        next_page_list = response.xpath('//li[@class="ipsPagination_next"]')
+        if next_page_list is not None:
+            next_page = next_page_list.xpath('.//a').extract_first()
+            next_page = response.urljoin(next_page)
+            yield scrapy.Request(next_page, callback=self.parse)
