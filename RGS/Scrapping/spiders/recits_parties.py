@@ -19,6 +19,7 @@ class QuotesSpider(scrapy.Spider):
                 continue
             yield {
                'title' : aar.xpath('.//a//@title').extract_first(),
+               'url' : aar.xpath('.//a//@href').extract_first(),
     				'replies' : stats[0].xpath('.//span//text()').extract_first(),
     				'views' : stats[1].xpath('.//span//text()').extract_first(),
                'date' : today
