@@ -47,12 +47,12 @@ def main(args):
     data = pd.read_json(os.path.join(get_data_dir(), 'Recits_parties.json'))
     format_data(data)
     latest_date, previous_latest_date, diff_2_latest_dates = compute_diff_on_2_latest_dates(data)
-    print('TOP REPLIES between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
-                                                    format_pretty_date(latest_date)))
-    print_top_diff(diff_2_latest_dates, int(args[1]), 'replies')
-    print('\n\nTOP VIEWS between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
+    print('TOP VIEWS between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
                                                     format_pretty_date(latest_date)))
     print_top_diff(diff_2_latest_dates, int(args[1]), 'views')
+    print('\n\nTOP REPLIES between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
+                                                    format_pretty_date(latest_date)))
+    print_top_diff(diff_2_latest_dates, int(args[1]), 'replies')
 
 
 if __name__ == "__main__":
