@@ -20,9 +20,8 @@ def compute_diff_on_2_latest_dates(data):
     latest_date = data['date'].unique()[-1]
     previous_latest_date = data['date'].unique()[-2]
     latest_date_df = data[data['date'] == latest_date]
-    # TODO : Do the merge on url instead of title
-    previous_latest_date_df = data[data['date'] == previous_latest_date][['replies', 'title', 'views']]
-    merged_data = pd.merge(latest_date_df, previous_latest_date_df, on='title', how='left')
+    previous_latest_date_df = data[data['date'] == previous_latest_date][['replies', 'title', 'views', 'url']]
+    merged_data = pd.merge(latest_date_df, previous_latest_date_df, on=['title', 'url'], how='left')
     merged_data.fillna(0, inplace=True)
     merged_data['diff_replies'] = merged_data['replies_x'] - merged_data['replies_y']
     merged_data['diff_views'] = merged_data['views_x'] - merged_data['views_y']
