@@ -6,7 +6,7 @@ Run the following command to scrap the RGS and Paradoxwebsite to get the new sta
 AARs.
 
 ```
-cd RGS
+cd AAR
 scrapy crawl rgs_aar -o ./Data/RGS_AAR.json
 scrapy crawl paradox_aar -o ./Data/Paradox_AAR.json
 ```
