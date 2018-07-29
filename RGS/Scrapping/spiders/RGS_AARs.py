@@ -1,8 +1,9 @@
 import scrapy
 import datetime
 
-class QuotesSpider(scrapy.Spider):
-    name = "recits_parties"
+
+class RGSSpider(scrapy.Spider):
+    name = "rgs_aar"
     start_urls = [
         'http://forum.reseau-js.com/forum/96-vos-r%C3%A9cits-de-parties/'
     ]

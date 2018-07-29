@@ -7,7 +7,7 @@ AARs.
 
 ```
 cd RGS
-scrapy crawl recits_parties -o ./Data/Recits_parties.json
+scrapy crawl rgs_aar -o ./Data/RGS_AAR.json
 ```
 
 ## Fix the file
@@ -21,7 +21,7 @@ Run the following script to get top n threads according to new views and replies
 2 latest scrapping dates.
 
 ```
-python Analysis/Tops.py <n>
+python Analysis/Tops.py RGS_AAR.json <n>
 ```
 
 *n* is the size of the top (for example 5).
