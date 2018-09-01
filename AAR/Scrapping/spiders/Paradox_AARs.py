@@ -47,7 +47,7 @@ class ParadoxAARSpider(scrapy.Spider):
                 'title': aar.xpath('.//h3[@class="title"]//a//text()').extract_first(),
                 'url': base_url + aar.xpath('.//h3[@class="title"]//a//@href').extract_first(),
                 'replies': stat_div[0].extract().replace('\n', ''),
-                'views': stat_div[0].extract().replace('\n', ''),
+                'views': stat_div[1].extract().replace('\n', ''),
                 'date': today,
                 'game': game
             }

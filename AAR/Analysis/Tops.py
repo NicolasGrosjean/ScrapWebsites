@@ -11,9 +11,9 @@ def get_data_dir():
 
 def format_data(data):
     if data['replies'].dtype == 'O':
-        data['replies'] = pd.to_numeric(data['replies'].apply(lambda s: s.replace(',', '')))
+        data['replies'] = pd.to_numeric(data['replies'].apply(lambda s: s.replace(',', '').replace('.', '')))
     if data['views'].dtype == 'O':
-        data['views'] = pd.to_numeric(data['views'].apply(lambda s: s.replace(',', '')))
+        data['views'] = pd.to_numeric(data['views'].apply(lambda s: s.replace(',', '').replace('.', '')))
 
 
 def compute_diff_on_2_latest_dates(data):
