@@ -43,7 +43,7 @@ def format_pretty_date(date):
 def main(args):
     json_path = os.path.join(get_data_dir(), args[1])
     print('Read the file {0}'.format(json_path))
-    data = pd.read_json(json_path)
+    data = pd.read_json(json_path, encoding='utf-8')
     format_data(data)
     latest_date, previous_latest_date, diff_2_latest_dates = compute_diff_on_2_latest_dates(data)
     file_path = 'toto.md'
