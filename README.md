@@ -1,5 +1,14 @@
 # Scrap the statistics about RGS AARs
 
+## Installation
+Install [Miniconda](https://conda.io/miniconda.html).
+
+Create a conda environment with the following command.
+
+````
+conda env create --file environment.yml
+````
+
 ## Update the data
 
 Run the following command to scrap the RGS and Paradoxwebsite to get the new statistics about the
@@ -27,8 +36,3 @@ python Analysis/Tops.py Paradox_AAR.json <n>
 ```
 
 *n* is the size of the top (for example 5).
-
-#### Known issue
-UnicodeEncodeError: 'charmap' codec can't encode character
-
-In that case, run the analyze in debug mode.
