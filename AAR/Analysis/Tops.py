@@ -28,16 +28,16 @@ def compute_diff_on_2_latest_dates(data):
     return latest_date, previous_latest_date, merged_data[['title', 'url', 'diff_replies', 'diff_views']]
 
 
-def print_top_diff(diff_2_latest_dates, n, type):
-    for index, row in diff_2_latest_dates.nlargest(n, 'diff_' + type).iterrows():
-        if row['diff_' + type] == 0:
-            print('NO MORE THREAD WITH {0} !'.format(type.upper()))
+def write_top_diff(opened_file, diff_2_latest_dates, n, stat_type):
+    for index, row in diff_2_latest_dates.nlargest(n, 'diff_' + stat_type).iterrows():
+        if row['diff_' + stat_type] == 0:
+            print('NO MORE THREAD WITH {0} !'.format(stat_type.upper()))
             return
-        print(u'{0} {1} {2}'.format(row['url'], row['title'], int(row['diff_' + type])))
+        opened_file.write('\n|[{0}]({1})|{2}|'.format(row['title'], row['url'], int(row['diff_' + stat_type])))
 
 
 def format_pretty_date(date):
-    return pd.to_datetime(str(date)).strftime('%d/%m/%Y')
+    return pd.to_datetime(str(date)).strftime('%d %b %Y')
 
 
 def main(args):
@@ -46,12 +46,18 @@ def main(args):
     data = pd.read_json(json_path)
     format_data(data)
     latest_date, previous_latest_date, diff_2_latest_dates = compute_diff_on_2_latest_dates(data)
-    print('TOP VIEWS between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
-                                                    format_pretty_date(latest_date)))
-    print_top_diff(diff_2_latest_dates, int(args[2]), 'views')
-    print('\n\nTOP REPLIES between {0} and {1}:'.format(format_pretty_date(previous_latest_date),
-                                                    format_pretty_date(latest_date)))
-    print_top_diff(diff_2_latest_dates, int(args[2]), 'replies')
+    file_path = 'toto.md'
+    with open(file_path, 'w') as file:
+        file.write('## TOP VIEWS*')
+        file.write('\n\n|AAR name and link|Nb|')
+        file.write('\n| --- | --- |')
+        write_top_diff(file, diff_2_latest_dates, int(args[2]), 'views')
+        file.write('\n\n## TOP REPLIES*')
+        file.write('\n\n|AAR name and link|Nb|')
+        file.write('\n| --- | --- |')
+        write_top_diff(file, diff_2_latest_dates, int(args[2]), 'replies')
+        file.write('\n\n**Statistics between {0} and {1}*'.format(format_pretty_date(previous_latest_date),
+                                                                  format_pretty_date(latest_date)))
 
 
 if __name__ == "__main__":
