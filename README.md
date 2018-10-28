@@ -25,7 +25,7 @@ scrapy crawl paradox_aar -o ./Data/Paradox_AAR.json
 In *Data/RGS_AAR.json* and *Data/Paradox_AAR.json*, search the line with **][**,
 remove it and add a comma at the end of the previous line.
 
-## Get the top of replies and views between the 2 last scrapping
+## Write the top of replies and views between the 2 last scrapping
 
 Run the following script to get top n threads according to new views and replies between the 
 2 latest scrapping dates.
@@ -35,4 +35,6 @@ python Analysis/Tops.py RGS_AAR.json <n>
 python Analysis/Tops.py Paradox_AAR.json <n>
 ```
 
-*n* is the size of the top (for example 5).
+*n* is the size of the top (for example 10).
+
+The results are written in the ARR/Results/RGS and ARR/Results/Paradox directories

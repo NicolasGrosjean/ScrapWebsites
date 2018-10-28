@@ -40,22 +40,33 @@ def format_pretty_date(date):
     return pd.to_datetime(str(date)).strftime('%d %b %Y')
 
 
+def get_stats_year_and_month(latest_date):
+    timestamp = pd.to_datetime(str(latest_date))
+    if timestamp.day < 15:
+        # Stats are for the previous month
+        timestamp = timestamp - pd.DateOffset(months=1)
+    return timestamp.strftime('%Y_%m')
+
+
 def main(args):
-    json_path = os.path.join(get_data_dir(), args[1])
+    relative_json_path = args[1]
+    top_number = int(args[2])
+    json_path = os.path.join(get_data_dir(), relative_json_path)
     print('Read the file {0}'.format(json_path))
     data = pd.read_json(json_path, encoding='utf-8')
     format_data(data)
     latest_date, previous_latest_date, diff_2_latest_dates = compute_diff_on_2_latest_dates(data)
-    file_path = 'toto.md'
+    res_directory = os.path.join(get_data_dir(), '..', 'Results', relative_json_path.split('_')[0])
+    file_path = os.path.join(res_directory, get_stats_year_and_month(latest_date) + '.md')
     with open(file_path, 'w') as file:
         file.write('## TOP VIEWS*')
         file.write('\n\n|AAR name and link|Nb|')
         file.write('\n| --- | --- |')
-        write_top_diff(file, diff_2_latest_dates, int(args[2]), 'views')
+        write_top_diff(file, diff_2_latest_dates, top_number, 'views')
         file.write('\n\n## TOP REPLIES*')
         file.write('\n\n|AAR name and link|Nb|')
         file.write('\n| --- | --- |')
-        write_top_diff(file, diff_2_latest_dates, int(args[2]), 'replies')
+        write_top_diff(file, diff_2_latest_dates, top_number, 'replies')
         file.write('\n\n**Statistics between {0} and {1}*'.format(format_pretty_date(previous_latest_date),
                                                                   format_pretty_date(latest_date)))
 
