@@ -17,23 +17,40 @@ def format_data(data):
 
 
 def compute_diff_on_2_latest_dates(data):
+    if 'game' in data:
+        game_key_cols = ['title', 'url', 'game']
+    else:
+        game_key_cols = ['title', 'url']
     latest_date = data['date'].unique()[-1]
     previous_latest_date = data['date'].unique()[-2]
     latest_date_df = data[data['date'] == latest_date]
-    previous_latest_date_df = data[data['date'] == previous_latest_date][['replies', 'title', 'views', 'url']]
-    merged_data = pd.merge(latest_date_df, previous_latest_date_df, on=['title', 'url'], how='left')
+    previous_latest_date_df = data[data['date'] == previous_latest_date][game_key_cols + ['replies', 'views']]
+    merged_data = pd.merge(latest_date_df, previous_latest_date_df, on=game_key_cols, how='left')
     merged_data.fillna(0, inplace=True)
     merged_data['diff_replies'] = merged_data['replies_x'] - merged_data['replies_y']
     merged_data['diff_views'] = merged_data['views_x'] - merged_data['views_y']
-    return latest_date, previous_latest_date, merged_data[['title', 'url', 'diff_replies', 'diff_views']]
+    return latest_date, previous_latest_date, merged_data[game_key_cols + ['diff_replies', 'diff_views']]
 
 
 def write_top_diff(opened_file, diff_2_latest_dates, n, stat_type):
+    has_game_col = 'game' in diff_2_latest_dates
     for index, row in diff_2_latest_dates.nlargest(n, 'diff_' + stat_type).iterrows():
         if row['diff_' + stat_type] == 0:
             print('NO MORE THREAD WITH {0} !'.format(stat_type.upper()))
             return
-        opened_file.write('\n|[{0}]({1})|{2}|'.format(row['title'], row['url'], int(row['diff_' + stat_type])))
+        if has_game_col:
+            try:
+                opened_file.write('\n|{3}|[{0}]({1})|{2}|'.format(row['title'], row['url'],
+                                                                  int(row['diff_' + stat_type]), row['game']))
+            except UnicodeEncodeError:
+                print('UnicodeEncodeError when printing')
+                print(row)
+        else:
+            try:
+                opened_file.write('\n|[{0}]({1})|{2}|'.format(row['title'], row['url'], int(row['diff_' + stat_type])))
+            except UnicodeEncodeError:
+                print('UnicodeEncodeError when printing')
+                print(row)
 
 
 def format_pretty_date(date):
@@ -60,12 +77,20 @@ def main(args):
     file_path = os.path.join(res_directory, get_stats_year_and_month(latest_date) + '.md')
     with open(file_path, 'w') as file:
         file.write('## TOP VIEWS*')
-        file.write('\n\n|AAR name and link|Nb|')
-        file.write('\n| --- | --- |')
+        if 'game' in data:
+            file.write('\n\n|Game|AAR name and link|Nb|')
+            file.write('\n| --- | --- | --- |')
+        else:
+            file.write('\n\n|AAR name and link|Nb|')
+            file.write('\n| --- | --- |')
         write_top_diff(file, diff_2_latest_dates, top_number, 'views')
         file.write('\n\n## TOP REPLIES*')
-        file.write('\n\n|AAR name and link|Nb|')
-        file.write('\n| --- | --- |')
+        if 'game' in data:
+            file.write('\n\n|Game|AAR name and link|Nb|')
+            file.write('\n| --- | --- | --- |')
+        else:
+            file.write('\n\n|AAR name and link|Nb|')
+            file.write('\n| --- | --- |')
         write_top_diff(file, diff_2_latest_dates, top_number, 'replies')
         file.write('\n\n**Statistics between {0} and {1}*'.format(format_pretty_date(previous_latest_date),
                                                                   format_pretty_date(latest_date)))
