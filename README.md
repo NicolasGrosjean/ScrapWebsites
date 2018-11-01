@@ -9,6 +9,17 @@ Create a conda environment with the following command.
 conda env create --file environment.yml
 ````
 
+## Activate the environment to run code
+### Windows
+````
+activate scrap_websites
+````
+
+### Linux
+````
+source activate scrap_websites
+````
+
 ## Update the data
 
 Run the following command to scrap the RGS and Paradoxwebsite to get the new statistics about the
