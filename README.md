@@ -49,3 +49,16 @@ python Analysis/Tops.py Paradox_AAR.json <n>
 *n* is the size of the top (for example 10).
 
 The results are written in the ARR/Results/RGS and ARR/Results/Paradox directories
+
+## Write the top of replies and views for the latest year
+
+Run the following script to get top n threads according to new views and replies in latest year.
+
+```
+python Analysis/Tops.py RGS_AAR.json <n> --year
+python Analysis/Tops.py Paradox_AAR.json <n> --year
+```
+
+*n* is the size of the top (for example 100).
+
+The results are written in the ARR/Results/RGS and ARR/Results/Paradox directories
